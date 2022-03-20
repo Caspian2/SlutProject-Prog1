@@ -5,58 +5,56 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb2D;
-
-    private float walkSpeed;
+    private float moveSpeed;
     private float runSpeed;
+    private float walkSpeed;
+    
     private float jumpForce;
     private bool isJumping;
-    private float moveVertical;
-    private float moveHorizontal;
+
+    private float horizontalMove;
+    private float verticalMove;
+    
+    
 
     // Start is called before the first frame update
     void Start()
-    {
-        rb2D = gameObject.GetComponent<Rigidbody2D>();
+    {   //Gör så att när jag använder rb2D så gör gameObjectet det. I detta fall är det playern
+        rb2D = gameObject.GetComponent<Rigidbody2D>();     
 
-        walkSpeed = 0.2f;
-        runSpeed = 0.5f;
-        jumpForce = 10f;
+        moveSpeed = 2.5f;
+        walkSpeed = 2.5f;
+        runSpeed = 5f;
+        jumpForce = 3f;
         isJumping = false;
+
+
     }
 
     // Update is called once per frame
     void Update()
-    {
-        moveHorizontal = Input.GetAxisRaw("Horizontal");
-        moveVertical = Input.GetAxisRaw("Vertical");
+    {   // Sätter floatsen till unitys inbyggda knappar för movement
+        horizontalMove = Input.GetAxisRaw("Horizontal");
+        verticalMove = Input.GetAxisRaw("Jump");
     }
-
+    // Jag använder FixedUpdate istället för Update eftersom jag använder Unitys Physics
     void FixedUpdate()
-    {
-        if (moveHorizontal >0.1f || moveHorizontal < -0.1f)
+    {   //Om man trycker shift springer man istället för att gå
+        if(Input.GetKey(KeyCode.LeftShift))
         {
-            rb2D.AddForce(new Vector2(moveHorizontal * walkSpeed, 0f), ForceMode2D.Impulse);
-        }    
-        if (!isJumping && moveVertical >0.1f)
-        {
-            rb2D.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
-        }    
-
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Ground")
-        {
-            isJumping = false;
+            moveSpeed = runSpeed;
         }
-    }
-
-    void OnTriggerExit2D(Collider2D collision) 
-    {
-       if(collision.gameObject.tag == "Ground")
+        else
         {
-            isJumping = true;
-        }  
-    }
-}
+            moveSpeed = walkSpeed;
+        }
+        //Ger Rigidbodyn en movement åt sidan
+        rb2D.velocity = new Vector2(horizontalMove * moveSpeed, rb2D.velocity.y);
+        //Get Movement uppåt
+        if(verticalMove > 0.1f)
+        {
+            rb2D.velocity = new Vector2(rb2D.velocity.x, verticalMove * jumpForce);
+        }
+    }    
+
+}   
