@@ -6,78 +6,86 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb2D;
     private BoxCollider2D coll;
-    [SerializeField] private LayerMask Ground;
-    [SerializeField] Transform groundCheckCollider;
 
-    [SerializeField]private bool isGrounded;
-    
-    const float groundCheckRadius = 0.1f;
+    [SerializeField] LayerMask jumpableGround;
+
     private float moveSpeed;
     private float runSpeed;
     private float walkSpeed;
     private float jumpForce;
+    private float moveInput;
+
+    private bool jumped = false;
+    private  bool canDoubleJump;
     
-    private float horizontalMove;
-    private float verticalMove;
- 
 
     // Start is called before the first frame update
     void Start()
-    {   //Gör så att när jag använder rb2D så gör gameObjectet det. I detta fall är det playern
-        rb2D = gameObject.GetComponent<Rigidbody2D>();     
+    {   
+        rb2D = GetComponent<Rigidbody2D>(); 
+        coll = GetComponent<BoxCollider2D>();    
 
         moveSpeed = 3f;
         walkSpeed = 3f;
         runSpeed = 6f;
         jumpForce = 13f;
-        isGrounded = false;
     
-
-
     }
 
-    // Update is called once per frame
     void Update()
-    {   // Sätter floatsen till unitys inbyggda knappar för movement
-        horizontalMove = Input.GetAxisRaw("Horizontal");
-        verticalMove = Input.GetAxisRaw("Jump");
+    {
+        //Kollar om jag tycker space och är grounded, detta gör att jumped är sant vilket gör att jag hoppar
+        if(IsGrounded())
+        {
+            canDoubleJump = true;
+        }
+        /*Om jag trycker space kollar den om jag är groundad om jag är det kan jag hoppa, om jag inte är det kollar den om jag kan dubbelhoppa
+        om jag kan det hoppar jag och sen sätter att jag inte längre kan dubbelhoppa*/
+        if(Input.GetButtonDown("Jump"))
+        {
+            if(IsGrounded())
+            {
+               jumped = true;
+            }else
+                {
+                if(canDoubleJump)
+                    {
+                    jumped = true;
+                    canDoubleJump = false;
+                    }
+                }
+        }
+        
+        //Kollar om man trycker "a" eller "d" om man trycker "a" får moveInput ett värde på -1 om man trycker "d" får den 1
+        moveInput = Input.GetAxisRaw("Horizontal");
     }
+
     // Jag använder FixedUpdate istället för Update eftersom jag använder Unitys Physics
     void FixedUpdate()
     { 
+        //Ger movement beronde på moveInput
+        rb2D.velocity = new Vector2(moveInput * moveSpeed, rb2D.velocity.y);
 
-        GroundCheck();
-
-        void GroundCheck()
-        {
-            isGrounded = false;
-            //Kollar om Groundcheck är på mark eller inte
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckCollider.position, groundCheckRadius, Ground);
-            if(colliders.Length > 0)
-            {
-                isGrounded = true;
-            }
-        } 
-        
         //Om man trycker shift springer man istället för att gå
         if(Input.GetKey(KeyCode.LeftShift))
         {
             moveSpeed = runSpeed;
-        }
-        else
-        {
+        }else{
             moveSpeed = walkSpeed;
-        }
-        //Ger Rigidbodyn en movement åt sidan
-        rb2D.velocity = new Vector2(horizontalMove * moveSpeed, rb2D.velocity.y);
-        //Get Movement uppåt
-        if(verticalMove > 0.1f && isGrounded == true)
+        }  
+
+        /*Jag kan inte bara ha min hoppfunktion i FixedUpdate eftersom då hoppas jag bara ibland pågrund av att fixedupdate
+        Callar inte varje Frame, men genom att kolla buttondown i update och sen cala den i fixedupdate så löser de sig och jag har fortfarande rätt physics*/
+        if(jumped)
         {
-            rb2D.velocity = new Vector2(rb2D.velocity.x, verticalMove * jumpForce);
-        }   
-
-        
-    }    
-
-  
+            rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);
+            jumped = false;
+        }
+    }   
+    //Kollar om spelaren är på ett jumpableGround eller inte
+    private bool IsGrounded()
+    {
+        RaycastHit2D BoxcastHit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .2f, jumpableGround);
+        return BoxcastHit.collider != null;
+    }
 }   
