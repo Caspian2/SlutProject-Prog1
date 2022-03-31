@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float crouchSpeed;
     private float jumpForce;
     private float moveInput;
+    
 
     private bool jumped = false;
     private bool canDoubleJump;
@@ -82,24 +83,15 @@ public class PlayerMovement : MonoBehaviour
         {     
             crouching = true;
             coll.enabled = false; 
-            if(IsCrouching())
-            {
-                crouching = true;
-            }  
-            else{
-                crouching = false;
-            }
+    
         } 
         else if(Input.GetButtonUp("Crouch")) 
             {
                 crouching = false;   
                 coll.enabled = true;
+                
             }
-        if(crouching == true)
-        {
-            moveSpeed = crouchSpeed;
-        } 
-        
+      
     
         //Kollar om man trycker "a" eller "d" om man trycker "a" får moveInput ett värde på -1 om man trycker "d" får den 1
         moveInput = Input.GetAxisRaw("Horizontal");
@@ -118,6 +110,11 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = runSpeed;
         }else{
             moveSpeed = walkSpeed;
+        }
+        
+        if(Input.GetButton("Crouch"))
+        {
+            moveSpeed = crouchSpeed;
         }  
 
         /*Jag kan inte bara ha min hoppfunktion i FixedUpdate eftersom då hoppas jag bara ibland pågrund av att fixedupdate
