@@ -12,8 +12,10 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
 
     public float moveSpeed;
+    public float curSpeed;
     private float runSpeed;
     private float walkSpeed;
+    private float maxSpeed;
     private float crouchSpeed;
     private float jumpForce;
     private float moveInput;
@@ -36,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = 0f;
         walkSpeed = 3f;
         runSpeed = 6f;
+        maxSpeed = 15f;
         crouchSpeed = 1.5f;
         jumpForce = 13f;
     
@@ -47,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         SetAnimationState();
 
         //Kollar om jag tycker space och är grounded, detta gör att jumped är sant vilket gör att jag hoppar
+        
         if(IsGrounded())
         {
             canDoubleJump = true;
@@ -61,9 +65,9 @@ public class PlayerMovement : MonoBehaviour
             flip(); 
         }
 
-
         /*Om jag trycker space kollar den om jag är groundad om jag är det kan jag hoppa, om jag inte är det kollar den om jag kan dubbelhoppa
         om jag kan det hoppar jag och sen sätter att jag inte längre kan dubbelhoppa*/
+        
         if(Input.GetButtonDown("Jump"))
         {
             if(IsGrounded())
@@ -79,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //När jag crouchar tas min standingcoll bort men min crouching coll är kvar, när jag släpper crouch blir det normalt igen
+
         if(Input.GetButtonDown("Crouch"))
         {     
             crouching = true;
@@ -100,15 +105,23 @@ public class PlayerMovement : MonoBehaviour
     // Jag använder FixedUpdate istället för Update eftersom jag använder Unitys Physics
     void FixedUpdate()
     { 
-       
+        
+        curSpeed = rb2D.velocity.magnitude;
+        
+        if(rb2D.velocity.magnitude > maxSpeed)
+        {
+            rb2D.velocity = rb2D.velocity.normalized * maxSpeed;
+        }
+        
         //Ger movement beronde på moveInput
-        rb2D.velocity = new Vector2(moveInput * moveSpeed, rb2D.velocity.y);
+    
+        rb2D.AddForce(new Vector2(moveInput * moveSpeed, 0));
 
         //Om man trycker shift springer man istället för att gå
-        if(Input.GetKey(KeyCode.LeftShift))
+        if(Input.GetKey(KeyCode.LeftShift) && moveInput !=0 )
         {
             moveSpeed = runSpeed;
-        }else{
+        } else {
             moveSpeed = walkSpeed;
         }
         
@@ -116,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
         {
             moveSpeed = crouchSpeed;
         }  
-
+ 
         /*Jag kan inte bara ha min hoppfunktion i FixedUpdate eftersom då hoppas jag bara ibland pågrund av att fixedupdate
         Callar inte varje Frame, men genom att kolla buttondown i update och sen cala den i fixedupdate så löser de sig och jag har fortfarande rätt physics*/
         if(jumped)
@@ -169,11 +182,13 @@ public class PlayerMovement : MonoBehaviour
     ///<summary>
     ///Kollar om spelaren är på ett jumpableGround eller inte
     ///</summary>  
+    
     private bool IsGrounded()
     {
         RaycastHit2D BoxcastHit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .2f, jumpableGround);
         return BoxcastHit.collider != null;
     }
+    
     ///<summary>
     /// Skapar en Box över crouchingcoll för att kolla om något är över
     ///</summary>
