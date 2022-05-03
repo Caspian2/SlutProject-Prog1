@@ -9,7 +9,7 @@ public class Target : MonoBehaviour
 
    void OnTriggerEnter2D(Collider2D other)
    {    
-     Destroy(breakableWall);
+      GameObject.Destroy(gameObject);
    }
 
   

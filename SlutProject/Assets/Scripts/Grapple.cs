@@ -7,6 +7,7 @@ public class Grapple : MonoBehaviour
 
     private Vector3 mousePos;
     private Camera mainCamera;
+    public LayerMask layerMask;
 
 
     private bool check;
@@ -15,26 +16,34 @@ public class Grapple : MonoBehaviour
     private SpringJoint2D springJoint;
 
     private LineRenderer lineRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
+
         distanceJoint = GetComponent<DistanceJoint2D>();
-    
         distanceJoint.enabled = false;
-    
         check = true;
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+
         GetMousePos();
+
         if(Input.GetButtonDown("Fire2") && check)
-        {
-            distanceJoint.enabled = true;
-            distanceJoint.connectedAnchor = mousePos;
-            check = false;
+        {   
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, mousePos, Mathf.Infinity, layerMask);
+            if(hit)
+            {   
+                
+                distanceJoint.enabled = true;
+                distanceJoint.connectedAnchor = mousePos;
+                check = false;  
+            }
+            
         } else if(Input.GetButtonUp("Fire2"))
         {
             distanceJoint.enabled = false;
