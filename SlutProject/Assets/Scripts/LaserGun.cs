@@ -32,12 +32,15 @@ public class LaserGun : MonoBehaviour
         }
 
         /*LastTimeShoot = Ingame Tiden så om lastTimeShoot + firerate så kan jag skjuta, annars kan jag inte*/
-        if(Input.GetButtonDown("Fire1"))
+        if(!PauseMenu.isPaused)
         {
-            if(Time.time > lastTimeShoot + fireRate)
+            if(Input.GetButtonDown("Fire1"))
             {
-                lastTimeShoot = Time.time;
-                Shoot();
+                if(Time.time > lastTimeShoot + fireRate)
+                {
+                    lastTimeShoot = Time.time;
+                    Shoot();
+                }
             }
         }
     }
