@@ -18,6 +18,7 @@ public class LaserGun : MonoBehaviour
     void Update()
     {   //Gör så att pist9len följer efter musen och pistolen flipar om jag drar musen över på vänster
         FaceMouse();
+        
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - laserGun.position;
         
         mousePos.Normalize();
