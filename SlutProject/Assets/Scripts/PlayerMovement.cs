@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb2D;
+    public static Rigidbody2D rb2D;
     [SerializeField]private BoxCollider2D coll;
     [SerializeField]private BoxCollider2D crouchingcoll;
     [SerializeField] LayerMask jumpableGround;
+    [SerializeField] private GameObject Player;
 
     public Animator animator;
 
@@ -38,14 +39,14 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = 0f;
         walkSpeed = 3f;
         runSpeed = 6f;
-        maxSpeed = 15f;
+        maxSpeed = 16f;
         crouchSpeed = 1.5f;
-        jumpForce = 13f;
+        jumpForce = 14f;
     
     }
 
     private void Update()
-    {
+    {     
 
         SetAnimationState();
 
@@ -103,15 +104,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Jag använder FixedUpdate istället för Update eftersom jag använder Unitys Physics
-    void FixedUpdate()
+     void FixedUpdate()
     { 
         
-        curSpeed = rb2D.velocity.magnitude;
-        
-        if(rb2D.velocity.magnitude > maxSpeed)
-        {
-            rb2D.velocity = rb2D.velocity.normalized * maxSpeed;
-        }
+       
         
         //Ger movement beronde på moveInput
     
@@ -129,6 +125,19 @@ public class PlayerMovement : MonoBehaviour
         {
             moveSpeed = crouchSpeed;
         }  
+         //Gör så jag inte glider när man släpper a / d
+         
+        if(moveInput == 0 )
+        {   
+
+            rb2D.drag = 10; 
+        }
+        else if(moveInput != 0){
+            rb2D.drag = 0;
+        } 
+        
+         
+       
  
         /*Jag kan inte bara ha min hoppfunktion i FixedUpdate eftersom då hoppas jag bara ibland pågrund av att fixedupdate
         Callar inte varje Frame, men genom att kolla buttondown i update och sen cala den i fixedupdate så löser de sig och jag har fortfarande rätt physics*/
@@ -137,6 +146,7 @@ public class PlayerMovement : MonoBehaviour
             rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);
             jumped = false;
         }
+        
     }   
 
     void SetAnimationState()
@@ -206,4 +216,5 @@ public class PlayerMovement : MonoBehaviour
         facingRight = !facingRight; // Detta gör att när vi callar flip() så byts facingRight från true till false eller false till true
         transform.Rotate(0f, 180f, 0f);
     }
+    
 }   

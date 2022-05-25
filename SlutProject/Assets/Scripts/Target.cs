@@ -5,11 +5,16 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
 
-    public GameObject breakableWall;
+   public GameObject breakableWall;
+   
+   private void Start() {
+   
+   }
 
    void OnTriggerEnter2D(Collider2D other)
    {    
       GameObject.Destroy(gameObject);
+      
    }
 
   

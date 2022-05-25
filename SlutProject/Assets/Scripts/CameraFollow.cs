@@ -6,12 +6,18 @@ public class CameraFollow : MonoBehaviour
 {
     private Transform playerTransform;
     public float offset;
+    
     // Start is called before the first frame update
+    
+   
+   
     void Start()
     {
+       
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         offset = 1.2f;
     }
+ 
 
     //Jag använder LateUpdate eftersom jag vill att kameran ska röra sig efter Playern och LateUpdate callar efter Update och FixedUpdate
     void LateUpdate() 
