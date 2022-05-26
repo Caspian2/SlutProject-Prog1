@@ -6,9 +6,11 @@ public class Grapple : MonoBehaviour
 {
 
     [SerializeField] private Transform lineStart;
+    [SerializeField] private GameObject shootPoint;
     private Vector3 mousePos;
+    private Vector3 shootPos;
     private Camera mainCamera;
-    public LayerMask layerMask;
+    LayerMask mask;
 
 
     private bool check;
@@ -37,13 +39,15 @@ public class Grapple : MonoBehaviour
 
         GetMousePos();
         DrawLine();
-
+        shootPos = shootPoint.transform.position;
+       
         if(Input.GetButtonDown("Fire2") && check)
         {   
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, mousePos, Mathf.Infinity, layerMask);
-            if(hit)
+            mask |= (1 << LayerMask.NameToLayer("Ground"));
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, mask); 
+            if(hit.collider != null)
             {   
-                
+                Debug.Log("Target name: " + hit.collider.name);
                 distanceJoint.enabled = true;
                 distanceJoint.connectedAnchor = mousePos;
                 check = false;  
@@ -70,4 +74,5 @@ public class Grapple : MonoBehaviour
     {
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
+
 }

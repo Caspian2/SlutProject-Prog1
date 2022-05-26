@@ -106,7 +106,12 @@ public class PlayerMovement : MonoBehaviour
     // Jag använder FixedUpdate istället för Update eftersom jag använder Unitys Physics
      void FixedUpdate()
     { 
+        curSpeed = rb2D.velocity.magnitude;
         
+        if(rb2D.velocity.magnitude > maxSpeed)
+        {
+            rb2D.velocity = rb2D.velocity.normalized * maxSpeed;
+        }
        
         
         //Ger movement beronde på moveInput
@@ -127,17 +132,6 @@ public class PlayerMovement : MonoBehaviour
         }  
          //Gör så jag inte glider när man släpper a / d
          
-        if(moveInput == 0 )
-        {   
-
-            rb2D.drag = 10; 
-        }
-        else if(moveInput != 0){
-            rb2D.drag = 0;
-        } 
-        
-         
-       
  
         /*Jag kan inte bara ha min hoppfunktion i FixedUpdate eftersom då hoppas jag bara ibland pågrund av att fixedupdate
         Callar inte varje Frame, men genom att kolla buttondown i update och sen cala den i fixedupdate så löser de sig och jag har fortfarande rätt physics*/
