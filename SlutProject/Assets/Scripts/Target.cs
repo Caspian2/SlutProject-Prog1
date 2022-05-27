@@ -10,7 +10,7 @@ public class Target : MonoBehaviour
    private void Start() {
    
    }
-
+   // Om du skjuer laser försvinner den
    void OnTriggerEnter2D(Collider2D other)
    {    
       GameObject.Destroy(gameObject);

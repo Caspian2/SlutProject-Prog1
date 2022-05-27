@@ -31,6 +31,8 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+
+    //Pausar tiden och aktiverar pausemenun
     public void pauseGame()
     {
         pauseMenu.SetActive(true);
@@ -38,6 +40,7 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
     }
 
+    //Tar bort pausmenun och sätter igång timern
     public void resumeGame()
     {
         pauseMenu.SetActive(false);
@@ -45,6 +48,7 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
     }
 
+    //Tar en tillbaka till mainmenu
     public void ToMainMenu()
    {
        Time.timeScale = 1f;

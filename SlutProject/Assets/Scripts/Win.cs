@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Win : MonoBehaviour
 {
-  
+    // Går du in i målet klarar du banan
   private void OnTriggerEnter2D(Collider2D other) {
       if(other.gameObject.name == ("Player")) 
       {
@@ -13,9 +13,9 @@ public class Win : MonoBehaviour
       }
   }
 
-
+ // Ny scen
   private void CompleteLevel()
-  {
+  { 
     SceneManager.LoadScene("Win");
     
   }

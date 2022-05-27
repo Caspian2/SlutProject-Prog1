@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
     }   
-
+        //Animationer
     void SetAnimationState()
     {
         if(moveInput == 0f)

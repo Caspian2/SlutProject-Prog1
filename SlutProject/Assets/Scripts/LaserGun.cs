@@ -16,9 +16,8 @@ public class LaserGun : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   //Gör så att pist9len följer efter musen och pistolen flipar om jag drar musen över på vänster
-        FaceMouse();
-        
+    {   //Gör så att pistolen följer efter musen och pistolen flipar om jag drar musen över 180grader
+         
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - laserGun.position;
         
         mousePos.Normalize();
@@ -44,13 +43,9 @@ public class LaserGun : MonoBehaviour
                 }
             }
         }
-    }
+    }   
 
-    void FaceMouse()
-    {
-        laserGun.transform.right = direrction;
-    }
-
+    //Skjuter en laser från shootpoints position och rotation
     void Shoot()
     {
         Instantiate(laserPrefab, shootPoint.position, shootPoint.rotation);

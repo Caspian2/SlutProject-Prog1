@@ -5,11 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+
+    // startar spelet
    public void PlayGame()
    {
        SceneManager.LoadScene("Level 1");
    }
 
+
+    //Stänger av spelet
    public void QuitGame()
    {
        Application.Quit();

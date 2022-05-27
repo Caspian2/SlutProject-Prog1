@@ -28,7 +28,7 @@ public class Grapple : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         distanceJoint = GetComponent<DistanceJoint2D>();
         distanceJoint.enabled = false;
-        check = true;
+        check = true; // Gör så du inte kan grappla två gånger samtidigt
         lineRenderer.positionCount = 0;
         
     }
@@ -40,14 +40,13 @@ public class Grapple : MonoBehaviour
         GetMousePos();
         DrawLine();
         shootPos = shootPoint.transform.position;
-       
+        // Om du försöker grappla och du håller musen över layer Ground så kan du grappla
         if(Input.GetButtonDown("Fire2") && check)
         {   
             mask |= (1 << LayerMask.NameToLayer("Ground"));
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, mask); 
             if(hit.collider != null)
             {   
-                Debug.Log("Target name: " + hit.collider.name);
                 distanceJoint.enabled = true;
                 distanceJoint.connectedAnchor = mousePos;
                 check = false;  
@@ -55,21 +54,22 @@ public class Grapple : MonoBehaviour
                 tempPos = mousePos; 
             }
             
-        } else if(Input.GetButtonUp("Fire2"))
+        } // Annars kan inte du grappla
+        else if(Input.GetButtonUp("Fire2"))
         {
             distanceJoint.enabled = false;
             check = true;
             lineRenderer.positionCount = 0;
         }
     }
-
+        // Drar en linje från pisolen till där du grapplar
     private void DrawLine()
     {
         if(lineRenderer.positionCount <=0) return;
         lineRenderer.SetPosition(0, lineStart.position);
         lineRenderer.SetPosition(1, tempPos);
     }
-
+        // Kollar vad du har musen
     private void GetMousePos()
     {
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
