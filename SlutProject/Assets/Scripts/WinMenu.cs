@@ -8,6 +8,7 @@ public class WinMenu : MonoBehaviour
 { 
 
   public Text time;
+  public Text time2;
 
 
   public void ToMainMenu()
@@ -18,5 +19,6 @@ public class WinMenu : MonoBehaviour
   // visar bästa tiden
    private void Start() {
       time.text = PlayerPrefs.GetFloat("BestTime").ToString();
+      time2.text = PlayerPrefs.GetFloat("BestTime2").ToString();
    }
 }

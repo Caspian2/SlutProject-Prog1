@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
     public float time1;
     public Text textbox;
     public Text bestTime;
+    public Text bestTime2;
     
         //Om det finns en bästatid visar den det i textrutan
      void Start() {
@@ -17,6 +18,11 @@ public class Timer : MonoBehaviour
             bestTime.text =  PlayerPrefs.GetFloat("BestTime").ToString();
         } else{
             bestTime.text = "No best time";
+        }
+        if(PlayerPrefs.HasKey("BestTime2") == true){
+            bestTime2.text =  PlayerPrefs.GetFloat("BestTime").ToString();
+        } else{
+            bestTime2.text = "No best time";
         }
     }
     // Timer som räknar up varje sekund
@@ -28,7 +34,7 @@ public class Timer : MonoBehaviour
     //Om tiden du klarade banan på är lägre än din bästa tid sätter den en ny bästa tid
     public void StopTimer()
     {       
-        if (time1 < PlayerPrefs.GetFloat("BestTime1")){
+        if (time1 < PlayerPrefs.GetFloat("BestTime")){
             SetBestTime();
         }
     }
@@ -41,7 +47,11 @@ public class Timer : MonoBehaviour
 
     // SetFloat besttime som tiden du klarade det på.
     public void SetBestTime(){
-        PlayerPrefs.SetFloat("BestTime1", time1);
-        bestTime.text = PlayerPrefs.GetFloat("BestTime1").ToString();
+        PlayerPrefs.SetFloat("BestTime", time1);
+        bestTime.text = PlayerPrefs.GetFloat("BestTime").ToString();
+    }    
+    public void SetBestTime2(){
+        PlayerPrefs.SetFloat("BestTime2", time1);
+        bestTime.text = PlayerPrefs.GetFloat("BestTime2").ToString();
     }    
 }
