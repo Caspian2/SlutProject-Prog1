@@ -6683,7 +6683,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1436425448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 1.8, z: 0}
+  m_LocalPosition: {x: -1.1, y: 1.8, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 1504520388}
@@ -6741,7 +6741,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0.15326118, y: 9.6810055}
   m_AutoConfigureDistance: 1
-  m_Distance: 7.8811855
+  m_Distance: 7.980032
   m_MaxDistanceOnly: 0
 --- !u!114 &1436425458
 MonoBehaviour:
@@ -7984,7 +7984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1433916738319798468, guid: 04ce1328a87f19c4a81c6bb82b266436, type: 3}
       propertyPath: m_LocalScale.y
-      value: -1.953667
+      value: -0.4747411
       objectReference: {fileID: 0}
     - target: {fileID: 1433916738319798468, guid: 04ce1328a87f19c4a81c6bb82b266436, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7992,7 +7992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1433916738319798468, guid: 04ce1328a87f19c4a81c6bb82b266436, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9.5
+      value: -10.2394
       objectReference: {fileID: 0}
     - target: {fileID: 1433916738319798468, guid: 04ce1328a87f19c4a81c6bb82b266436, type: 3}
       propertyPath: m_LocalPosition.z

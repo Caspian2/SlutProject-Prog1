@@ -13,6 +13,7 @@ public class Killzone : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             other.transform.position = new Vector2(x,y);
+            
         }
     }
 }

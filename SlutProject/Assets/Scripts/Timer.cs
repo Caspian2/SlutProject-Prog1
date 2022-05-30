@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class Timer : MonoBehaviour
     public Text bestTime2;
     
         //Om det finns en bästatid visar den det i textrutan
+
+
      void Start() {
+        
         time1 = 0;
         textbox.text = time1.ToString("F2");
         if(PlayerPrefs.HasKey("BestTime") == true){
@@ -20,7 +24,7 @@ public class Timer : MonoBehaviour
             bestTime.text = "No best time";
         }
         if(PlayerPrefs.HasKey("BestTime2") == true){
-            bestTime2.text =  PlayerPrefs.GetFloat("BestTime").ToString();
+            bestTime2.text =  PlayerPrefs.GetFloat("BestTime2").ToString();
         } else{
             bestTime2.text = "No best time";
         }
@@ -34,8 +38,18 @@ public class Timer : MonoBehaviour
     //Om tiden du klarade banan på är lägre än din bästa tid sätter den en ny bästa tid
     public void StopTimer()
     {       
-        if (time1 < PlayerPrefs.GetFloat("BestTime")){
-            SetBestTime();
+        if(SceneManager.GetActiveScene().name == "Level 1")
+        {   
+            if (time1 < PlayerPrefs.GetFloat("BestTime") || !PlayerPrefs.HasKey("BestTime1")){
+                SetBestTime();
+            }
+        }
+        else if(SceneManager.GetActiveScene().name == "Level 2")
+        {
+            if (time1 < PlayerPrefs.GetFloat("BestTime2") || !PlayerPrefs.HasKey("BestTime2"))
+            {
+                SetBestTime2();  
+            }    
         }
     }
     // När man går in i målet kör den StopTimer 
@@ -52,6 +66,6 @@ public class Timer : MonoBehaviour
     }    
     public void SetBestTime2(){
         PlayerPrefs.SetFloat("BestTime2", time1);
-        bestTime.text = PlayerPrefs.GetFloat("BestTime2").ToString();
+        bestTime2.text = PlayerPrefs.GetFloat("BestTime2").ToString();
     }    
 }
